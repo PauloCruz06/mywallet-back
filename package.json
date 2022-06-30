@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -19,6 +19,8 @@
     "joi": "^17.6.0",
     "mongodb": "^4.7.0",
     "nodemon": "^2.0.18",
+    "string-strip-html": "^9.1.12",
+    "strip-html": "^1.0.2",
     "uuid": "^8.3.2"
   }
 }
