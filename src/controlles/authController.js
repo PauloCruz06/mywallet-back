@@ -11,12 +11,14 @@ export async function signUp (req, res){
         password: req.body.password,
         passwordconfirm: req.body.passwordconfirm
     };
-    
+
     const value = await validationSignUp(userData);
-    
     if(value.error){
         res.sendStatus(422);
     }else{
+        const userDoc = await db.collection("users").findOne({ email: userData.email });
+        if(userDoc) return res.sendStatus(409);
+
         const passwordHash = bcrypt.hashSync(userData.password, 10);
         delete userData.passwordconfirm;
         await db.collection("users").insertOne({
@@ -24,5 +26,21 @@ export async function signUp (req, res){
             password: passwordHash
         });
         res.sendStatus(201);
+    }
+}
+
+export async function signIn (req, res){
+    const { email, password} = req.body;
+    if(!email || !password) return res.sendStatus(422);
+
+    const user = await db.collection("users").findOne({
+        email: stripHtml(email).result.trim()
+    });
+    if(user && bcrypt.compareSync(password, user.password)){
+        const token = uuid();
+        await db.collection("sessions").insertOne({ userId: user._id, token });
+        res.status(200).send(token);
+    }else{
+        res.sendStatus(401);
     }
 }
