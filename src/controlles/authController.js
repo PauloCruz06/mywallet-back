@@ -5,32 +5,36 @@ import { stripHtml } from "string-strip-html";
 import { validationSignUp } from "../validation.js";
 
 export async function signUp (req, res){
-    const userData = {
-        name: stripHtml(req.body.name).result.trim(),
-        email: stripHtml(req.body.email).result.trim(),
-        password: req.body.password,
-        passwordconfirm: req.body.passwordconfirm
-    };
-
-    const value = await validationSignUp(userData);
-    if(value.error){
-        res.sendStatus(422);
-    }else{
-        try{
-            const userDoc = await db.collection("users").findOne({ email: userData.email });
-            if(userDoc) return res.sendStatus(409);
-
-            const passwordHash = bcrypt.hashSync(userData.password, 10);
-            delete userData.passwordconfirm;
-            await db.collection("users").insertOne({
-                ...userData,
-                password: passwordHash
-            });
-
-            res.sendStatus(201);
-        }catch(e){
-            res.status(500).send(e);
+    try{
+        const userData = {
+            name: stripHtml(req.body.name).result.trim(),
+            email: stripHtml(req.body.email).result.trim(),
+            password: req.body.password,
+            passwordconfirm: req.body.passwordconfirm
+        };
+    
+        const value = await validationSignUp(userData);
+        if(value.error){
+            res.sendStatus(422);
+        }else{
+            try{
+                const userDoc = await db.collection("users").findOne({ email: userData.email });
+                if(userDoc) return res.sendStatus(409);
+    
+                const passwordHash = bcrypt.hashSync(userData.password, 10);
+                delete userData.passwordconfirm;
+                await db.collection("users").insertOne({
+                    ...userData,
+                    password: passwordHash
+                });
+    
+                res.sendStatus(201);
+            }catch(e){
+                res.status(500).send(e);
+            }
         }
+    }catch(e){
+        res.status(500).send(e);
     }
 }
 
