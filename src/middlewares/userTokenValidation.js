@@ -1,9 +1,9 @@
 import db from "../db.js";
 
 export default async function tokenValidation(req, res, next){
-    const { Authorization } = req.headers;
-    const token = Authorization?.replace('Bearer', '');
-    if(token && typeof token === 'string'){
+    const { authorization } = req.headers;
+    const token = authorization?.replace("Bearer ", "");
+    if(token && typeof token === "string"){
         try{
             const userSession = await db.collection("sessions").findOne({ token });
             if(!userSession) return res.sendStatus(401);
