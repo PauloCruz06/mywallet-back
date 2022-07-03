@@ -17,3 +17,19 @@ export async function validationSignUp(body){
 
     return value;
 }
+
+export async function validationTransaction(body){
+    const schemaUserTransaction = Joi.object({
+        description: Joi.string().required(),
+        amount: Joi.number().required(),
+        isPayment: Joi.boolean().required()
+    });
+
+    const value = schemaUserTransaction.validate({
+        description: body.description,
+        amount: body.amount,
+        isPayment: body.isPayment
+    });
+
+    return value;
+}
