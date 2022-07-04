@@ -30,7 +30,7 @@ export async function setTransactions(req, res){
     try {
         const body = {
             description: stripHtml(req.body.description).result.trim(),
-            amount: req.body.amount,
+            amount: Math.abs(req.body.amount),
             isPayment: req.body.isPayment
         }
         const value = await validationTransaction(body);
