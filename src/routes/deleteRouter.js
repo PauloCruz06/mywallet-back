@@ -4,6 +4,6 @@ import { deleteTransactions } from "../controlles/deleteController.js";
 
 const deleteRouter = Router();
 
-deleteRouter.delete("/transactions", tokenValidation, deleteTransactions);
+deleteRouter.delete("/transactions/:id", tokenValidation, deleteTransactions);
 
 export default deleteRouter;
