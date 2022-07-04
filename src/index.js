@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRouter from "./routes/authRouter.js";
 import userRouter from "./routes/userRouter.js";
+import deleteRouter from "./routes/deleteRouter.js";
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ server.use(express.json());
 server.use(cors());
 server.use(authRouter);
 server.use(userRouter);
+server.use(deleteRouter)
 
 const PORT = process.env.PORT;
 
