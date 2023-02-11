@@ -27,7 +27,7 @@ A aplicação MyWallet tem o objetivo de simular uma conta de transações finan
 ## :rocket: Rotas
 
 Para todas as rotas autenticadas é necessário fornecer um token no header da requisição no seguinte formato: 
-```json
+```
 headers: {
   Authorization: "Bearer token"
 }
